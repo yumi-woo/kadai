@@ -1,0 +1,37 @@
+/* End.module.css */
+
+.container {
+  background-color: #bfffff;
+  padding: 2rem;
+  font-family: sans-serif;
+}
+
+.hr {
+  border: 1px solid black;
+  margin-bottom: 2rem;
+}
+
+.syuryouT {
+  margin-left: 25%;
+  width: 50%;
+  height: 60%;
+}
+
+.textwider {
+  width: 320px;
+  height: 380px;
+}
+
+.savebotton,
+.cancelbotton {
+  width: 150px;
+  height: 40px;
+  margin-left: 1rem;
+}
+
+.lastbotton {
+  margin-left: 74%;
+  margin-top: 4%;
+  display: flex;
+  gap: 1rem;
+}

@@ -1,0 +1,18 @@
+.pageContainer {
+  background-color: #bfffff;
+  min-height: 100vh;
+  padding: 40px;
+}
+
+.hrWrapper hr {
+  border: 1px solid black;
+}
+
+#idTable {
+  margin-left: 10%;
+}
+
+#loginbutton {
+  width: 200px;
+  height: 50px;
+}

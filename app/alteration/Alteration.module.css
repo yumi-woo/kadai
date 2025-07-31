@@ -1,0 +1,84 @@
+.body {
+  background-color: #bfffff;
+}
+
+/* 수평선 */
+.hr {
+  border: 1px solid black;
+}
+
+/* 로그아웃 버튼 */
+.logoutButton {
+  width: 150px;
+  height: 40px;
+  margin-left: 1000%;
+}
+
+/* 직원 정보 수정 테이블 */
+.hennkouTable {
+  margin-left: 10%;
+}
+
+/* 텍스트 정렬 */
+.tdRight {
+  text-align: right;
+}
+
+.tdLeft {
+  text-align: left;
+}
+
+/* "業務経歴一覧" 타이틀 */
+.sectionTitle {
+  margin-left: 10%;
+}
+
+/* 마지막 테이블 */
+.lastTable {
+  width: 80%;
+  height: 30%;
+  border-collapse: collapse;
+  margin-left: 10%;
+  padding: 8px;
+  text-align: center;
+}
+
+/* 일반 셀 */
+.tdLine {
+  border: 1px solid black;
+  background-color: white;
+  height: 25px;
+}
+
+/* 헤더 셀 */
+.tdYellow {
+  border: 1px solid black;
+  background-color: #ffff99;
+}
+
+/* 하단 버튼 테이블 */
+.buttonTable {
+  position: relative;
+  margin-left: 10%;
+  width: 100%;
+  margin-top: 1%;
+}
+
+/* 각 버튼 */
+.addCareer {
+  width: 150px;
+  height: 40px;
+  margin-right: 50%;
+}
+
+.save {
+  width: 150px;
+  height: 40px;
+  margin-left: 6%;
+}
+
+.back {
+  width: 150px;
+  height: 40px;
+  margin-left: 1%;
+}

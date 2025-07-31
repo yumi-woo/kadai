@@ -1,0 +1,149 @@
+.bodyBackground {
+  background-color: #bfffff;
+}
+
+/* 수평선 스타일 */
+.hrLine {
+  border: 1px solid black;
+  margin-bottom: 1rem;
+}
+
+/* 직원 검색 조건 테이블 */
+.informationTable {
+  width: 60%;
+  height: 20%;
+  margin: 10px auto;
+}
+
+.tdRight {
+  text-align: right;
+}
+
+.title1 {
+  margin-left: 5%;
+}
+
+/* 검색 버튼 */
+.searchButton {
+  width: 150px;
+  height: 40px;
+  margin-left: 87%;
+}
+
+/* 테이블 헤더 배경 */
+.yellowHeader {
+  background-color: #ffff99;
+  border: solid 1px black;
+}
+
+/* 직원 테이블 전체 */
+.yellowTable {
+  width: 90%;
+  height: 10%;
+  border-collapse: collapse;
+  margin: 20px auto;
+  text-align: center;
+  background-color: white;
+  border: 1px solid black;
+}
+
+.tdLine {
+  border: solid 1px black;
+  height: 25px;
+}
+
+/* 숨김 영역 */
+.blind {
+  display: none;
+}
+
+.blind2 {
+  display: none;
+}
+
+/* 버튼 공통 스타일 */
+.buttonLarge {
+  width: 150px;
+  height: 40px;
+}
+
+/* 하단 버튼 위치 */
+.bottomButtons {
+  display: flex;
+  justify-content: flex-end;
+  gap: 1rem;
+  margin-right: 5%;
+}
+
+/* 로그아웃 버튼 위치 */
+.logoutButton {
+  width: 150px;
+  height: 40px;
+  margin-left: auto;
+  float: right;
+}
+
+/* 입력창 넓이 조정 */
+.textWider1 {
+  width: 50px;
+}
+
+.textWider2 {
+  width: 380px;
+}
+
+.textWider3 {
+  width: 50px;
+}
+
+.container {
+  padding: 2rem;
+  font-family: sans-serif;
+  background-color: #bfffff; /* bodyBackground 대신 여기 적용 */
+  min-height: 100vh;
+}
+
+.headerTable {
+  width: 100%;
+  margin-bottom: 1rem;
+}
+
+.infoTable {
+  width: 100%;
+  border-spacing: 1rem;
+  margin-bottom: 1rem;
+}
+
+.searchButtonTable {
+  width: 100%;
+  text-align: right;
+  margin-bottom: 2rem;
+}
+
+.wideInput {
+  width: 300px;
+}
+
+.smallInput {
+  width: 80px;
+}
+
+.yellowTable {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 1rem;
+  border: 1px solid black;
+}
+
+.yellowTable th,
+.yellowTable td {
+  border: 1px solid black;
+  padding: 0.5rem;
+  text-align: center;
+}
+
+.bottomButtons {
+  width: 100%;
+  margin-top: 2rem;
+  text-align: center;
+}
