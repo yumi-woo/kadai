@@ -1,11 +1,28 @@
-// app/alteration/page.tsx
 "use client";
 
 import styles from "./Alteration.module.css";
 import { useRouter } from "next/navigation";
+import { useState } from "react";
 
 export default function AlterationPage() {
   const router = useRouter();
+
+  const [form, setForm] = useState({
+    shain_code: "",
+    shain_shimei: "",
+    seinen_gappi: "",
+    jyusho: "",
+    moyorieki_sen: "",
+    moyorieki_eki: "",
+    keiken_nensu: "",
+    seibetsu: "0",
+    shikaku: "",
+  });
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    setForm({ ...form, [name]: value });
+  };
 
   const logout = () => {
     router.push("/login");
@@ -15,9 +32,22 @@ export default function AlterationPage() {
     window.open("/end", "subwin", "width=1600,height=800");
   };
 
-  const save = () => {
+  const save = async () => {
     if (confirm("登録しますか？")) {
-      alert("登録完了");
+      const res = await fetch("/api/shain/add", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(form),
+      });
+
+      const data = await res.json();
+
+      if (data.success) {
+        alert("登録完了");
+        router.push("/logout"); // 등록 후 자동 이동
+      } else {
+        alert("登録失敗");
+      }
     } else {
       alert("取り消し");
     }
@@ -47,63 +77,82 @@ export default function AlterationPage() {
           <tr>
             <td className={styles.tdRight}>社員コード：</td>
             <td>
-              <input type="text" />
+              <input name="shain_code" onChange={handleChange} />
             </td>
             <td></td>
             <td></td>
             <td className={styles.tdRight}>資格：</td>
             <td>
-              <input type="text" />
+              <input name="shikaku" onChange={handleChange} />
             </td>
           </tr>
           <tr>
             <td className={styles.tdRight}>社員名称：</td>
             <td>
-              <input type="text" />
+              <input name="shain_shimei" onChange={handleChange} />
             </td>
             <td></td>
             <td></td>
             <td className={styles.tdRight}>生年月日：</td>
             <td>
-              <input type="text" /> (YYYY/MM/DD)
+              <input
+                name="seinen_gappi"
+                onChange={handleChange}
+                placeholder="YYYY-MM-DD"
+              />
             </td>
           </tr>
           <tr>
             <td className={styles.tdRight}>住所：</td>
             <td>
-              <input type="text" />
+              <input name="jyusho" onChange={handleChange} />
             </td>
             <td></td>
             <td></td>
             <td className={styles.tdRight}>学歴１：</td>
             <td>
-              <input type="text" /> (YYYY/MM)卒業
+              <input />
             </td>
           </tr>
           <tr>
             <td className={styles.tdRight}>最寄駅：</td>
             <td>
-              <input type="text" />線 <input type="text" />駅
+              <input name="moyorieki_sen" onChange={handleChange} />線
+              <input name="moyorieki_eki" onChange={handleChange} />駅
             </td>
             <td></td>
             <td></td>
             <td></td>
             <td>
-              <input type="text" />
+              <input />
             </td>
           </tr>
           <tr>
             <td className={styles.tdRight}>経験年数：</td>
             <td>
-              <input type="text" />年 &nbsp;&nbsp;&nbsp; 性別:
-              <input type="radio" name="gender" value="m" defaultChecked />男
-              <input type="radio" name="gender" value="w" />女
+              <input name="keiken_nensu" onChange={handleChange} />
+              年&nbsp;&nbsp;&nbsp;性別:
+              <input
+                type="radio"
+                name="seibetsu"
+                value="0"
+                defaultChecked
+                onChange={handleChange}
+              />
+              男
+              <input
+                type="radio"
+                name="seibetsu"
+                value="1"
+                onChange={handleChange}
+              />
+              女
             </td>
             <td></td>
             <td></td>
             <td className={styles.tdRight}>学歴２：</td>
             <td>
-              <input type="text" /> (YYYY/MM)卒業
+              <input />
             </td>
           </tr>
         </tbody>

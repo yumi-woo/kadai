@@ -1,4 +1,3 @@
-// /app/login/page.tsx
 "use client";
 
 import styles from "./Login.module.css";
@@ -7,13 +6,25 @@ import { useState } from "react";
 
 export default function LoginPage() {
   const router = useRouter();
-  const [employeeCode, setEmployeeCode] = useState("");
+  const [shain_code, setShain_code] = useState("");
   const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
 
-  const handleLogin = () => {
-    // 간단한 로직: 실제 로그인 로직은 서버 검증 필요
-    if (employeeCode && password) {
-      router.push("/logout"); // '/Logout.html' → '/logout' (Next.js 라우팅 기준)
+  const handleLogin = async () => {
+    const res = await fetch("/api/login", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json", // ✅ 반드시 필요!
+      },
+      body: JSON.stringify({ shain_code, password }),
+    });
+
+    const data = await res.json();
+
+    if (data.success) {
+      router.push("/logout");
+    } else {
+      setError(data.message);
     }
   };
 
@@ -31,8 +42,8 @@ export default function LoginPage() {
             <td>
               <input
                 type="text"
-                value={employeeCode}
-                onChange={(e) => setEmployeeCode(e.target.value)}
+                value={shain_code}
+                onChange={(e) => setShain_code(e.target.value)}
               />
             </td>
             <td></td>
@@ -61,6 +72,9 @@ export default function LoginPage() {
           </tr>
         </tbody>
       </table>
+
+      {/* 🔻 에러 메시지 표시 */}
+      {error && <p style={{ color: "red", marginTop: "10px" }}>{error}</p>}
     </div>
   );
 }

@@ -1,14 +1,62 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import styles from "./Logout.module.css"; // CSS Modules
+import { useEffect, useState } from "react";
+import styles from "./Logout.module.css";
 
 export default function DashboardPage() {
   const router = useRouter();
+  const [shains, setShains] = useState<any[]>([]);
+  const [filteredShains, setFilteredShains] = useState<any[]>([]);
+
+  // 검색 상태 변수들
+  const [name, setName] = useState("");
+  const [line, setLine] = useState("");
+  const [station, setStation] = useState("");
+  const [gender, setGender] = useState("all");
+  const [keiken, setKeiken] = useState("");
 
   const logout = () => router.push("/login");
   const alteration = () => router.push("/alteration");
-  const search = () => router.push("/logout2");
+
+  useEffect(() => {
+    async function fetchShains() {
+      const res = await fetch("/api/shain");
+      const data = await res.json();
+      if (data.success) {
+        setShains(data.data);
+        setFilteredShains(data.data);
+      } else {
+        alert("社員データの取得に失敗しました。");
+      }
+    }
+    fetchShains();
+  }, []);
+
+  const search = () => {
+    const results = shains.filter((s) => {
+      const genderMatch =
+        gender === "all" ||
+        (gender === "m" && s.seibetsu === "0") ||
+        (gender === "w" && s.seibetsu === "1");
+
+      const nameMatch =
+        !name || s.shain_shimei?.toLowerCase().includes(name.toLowerCase());
+      const lineMatch =
+        !line || s.moyorieki_sen?.toLowerCase().includes(line.toLowerCase());
+      const stationMatch =
+        !station ||
+        s.moyorieki_eki?.toLowerCase().includes(station.toLowerCase());
+      const keikenMatch =
+        !keiken || parseInt(s.keiken_nensu) === parseInt(keiken);
+
+      return (
+        genderMatch && nameMatch && lineMatch && stationMatch && keikenMatch
+      );
+    });
+
+    setFilteredShains(results);
+  };
 
   return (
     <div className={styles.container}>
@@ -34,23 +82,67 @@ export default function DashboardPage() {
           <tr>
             <td>社員名称:</td>
             <td>
-              <input type="text" className={styles.wideInput} />
+              <input
+                type="text"
+                className={styles.wideInput}
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+              />
             </td>
             <td></td>
             <td></td>
             <td>最寄駅：</td>
             <td>
-              <input type="text" className={styles.smallInput} />線
-              <input type="text" className={styles.smallInput} />駅
+              <input
+                type="text"
+                className={styles.smallInput}
+                value={line}
+                onChange={(e) => setLine(e.target.value)}
+              />
+              線
+              <input
+                type="text"
+                className={styles.smallInput}
+                value={station}
+                onChange={(e) => setStation(e.target.value)}
+              />
+              駅
             </td>
           </tr>
           <tr>
             <td>経験年数：</td>
             <td>
-              <input type="text" className={styles.smallInput} />年
-              &nbsp;&nbsp;性別:
-              <input type="radio" name="gender" value="m" defaultChecked />男
-              <input type="radio" name="gender" value="w" />女
+              <input
+                type="text"
+                className={styles.smallInput}
+                value={keiken}
+                onChange={(e) => setKeiken(e.target.value)}
+              />
+              年&nbsp;&nbsp;性別:
+              <input
+                type="radio"
+                name="gender"
+                value="m"
+                checked={gender === "m"}
+                onChange={() => setGender("m")}
+              />
+              男
+              <input
+                type="radio"
+                name="gender"
+                value="w"
+                checked={gender === "w"}
+                onChange={() => setGender("w")}
+              />
+              女
+              <input
+                type="radio"
+                name="gender"
+                value="all"
+                checked={gender === "all"}
+                onChange={() => setGender("all")}
+              />
+              指定なし
             </td>
             <td></td>
             <td></td>
@@ -115,16 +207,27 @@ export default function DashboardPage() {
           </tr>
         </thead>
         <tbody>
-          {[...Array(10)].map((_, i) => (
-            <tr key={i}>
-              <td>
-                <input type="radio" name="choice" defaultChecked />
-              </td>
-              {Array.from({ length: 9 }).map((_, j) => (
-                <td key={j}></td>
-              ))}
-            </tr>
-          ))}
+          {filteredShains.map((s) => {
+            const birthDate = new Date(s.seinen_gappi);
+            const age = new Date().getFullYear() - birthDate.getFullYear();
+            const birthStr = s.seinen_gappi.substring(0, 10);
+            return (
+              <tr key={s.shain_code}>
+                <td>
+                  <input type="radio" name="choice" defaultChecked />
+                </td>
+                <td>{s.shain_shimei}</td>
+                <td>{birthStr}</td>
+                <td>{age}</td>
+                <td>{s.keiken_nensu}</td>
+                <td>{s.seibetsu === "0" ? "男" : "女"}</td>
+                <td>{s.jyusho}</td>
+                <td>{s.moyorieki_sen}</td>
+                <td>{s.moyorieki_eki}</td>
+                <td>{s.shikaku}</td>
+              </tr>
+            );
+          })}
         </tbody>
       </table>
 
@@ -132,7 +235,7 @@ export default function DashboardPage() {
         <tbody>
           <tr>
             <td>
-              <button>社員追加</button>
+              <button onClick={alteration}>社員追加</button>
             </td>
             <td>
               <button onClick={alteration}>社員変更</button>
