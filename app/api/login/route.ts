@@ -1,4 +1,3 @@
-// 예시: app/api/login/route.ts
 import { NextResponse } from "next/server";
 import sql from "app/lib/db";
 
@@ -12,7 +11,16 @@ export async function POST(req: Request) {
     `;
 
     if (result.length > 0) {
-      return NextResponse.json({ success: true });
+      // 로그인 성공 시 쿠키 설정
+      const response = NextResponse.json({ success: true });
+      response.cookies.set("shain_code", shain_code, {
+        httpOnly: true,
+        path: "/",
+        maxAge: 60 * 60 * 24, // 1일
+        secure: process.env.NODE_ENV === "production",
+        sameSite: "lax",
+      });
+      return response;
     } else {
       return NextResponse.json({
         success: false,
