@@ -8,6 +8,7 @@ export default function DashboardPage() {
   const router = useRouter();
   const [shains, setShains] = useState<any[]>([]);
   const [filteredShains, setFilteredShains] = useState<any[]>([]);
+  const [selectedShainCode, setSelectedShainCode] = useState<string>("");
 
   // 검색 상태 변수들
   const [name, setName] = useState("");
@@ -56,6 +57,33 @@ export default function DashboardPage() {
     });
 
     setFilteredShains(results);
+  };
+
+  const handleDelete = async () => {
+    if (!selectedShainCode) {
+      alert("削除する社員を選択してください。");
+      return;
+    }
+
+    if (!confirm("本当に削除しますか？")) return;
+
+    const res = await fetch("/api/shain/delete", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ shain_code: selectedShainCode }),
+    });
+
+    const data = await res.json();
+    if (data.success) {
+      alert("削除完了しました。");
+      setShains(shains.filter((s) => s.shain_code !== selectedShainCode));
+      setFilteredShains(
+        filteredShains.filter((s) => s.shain_code !== selectedShainCode)
+      );
+      setSelectedShainCode("");
+    } else {
+      alert("削除に失敗しました。\n" + data.error);
+    }
   };
 
   return (
@@ -184,12 +212,13 @@ export default function DashboardPage() {
           <tr>
             <td></td>
             <td>
-              <button onClick={search}>検索</button>
+              <button className={styles.searchButton} onClick={search}>
+                検索
+              </button>
             </td>
           </tr>
         </tbody>
       </table>
-
       <h2>社員一覧</h2>
       <table className={styles.yellowTable}>
         <thead>
@@ -214,7 +243,12 @@ export default function DashboardPage() {
             return (
               <tr key={s.shain_code}>
                 <td>
-                  <input type="radio" name="choice" defaultChecked />
+                  <input
+                    type="radio"
+                    name="choice"
+                    checked={selectedShainCode === s.shain_code}
+                    onChange={() => setSelectedShainCode(s.shain_code)}
+                  />
                 </td>
                 <td>{s.shain_shimei}</td>
                 <td>{birthStr}</td>
@@ -235,13 +269,19 @@ export default function DashboardPage() {
         <tbody>
           <tr>
             <td>
-              <button onClick={alteration}>社員追加</button>
+              <button className={styles.buttonLarge} onClick={alteration}>
+                社員追加
+              </button>
             </td>
             <td>
-              <button onClick={alteration}>社員変更</button>
+              <button className={styles.buttonLarge} onClick={alteration}>
+                社員変更
+              </button>
             </td>
             <td>
-              <button>社員削除</button>
+              <button className={styles.buttonLarge} onClick={handleDelete}>
+                社員削除
+              </button>
             </td>
           </tr>
         </tbody>

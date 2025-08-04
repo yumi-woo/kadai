@@ -65,7 +65,7 @@ export default function LoginPage() {
             <td></td>
             <td></td>
             <td>
-              <button id="loginbutton" onClick={handleLogin}>
+              <button className={styles.loginButton} onClick={handleLogin}>
                 ログイン
               </button>
             </td>
